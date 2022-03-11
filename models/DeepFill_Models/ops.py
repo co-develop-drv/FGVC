@@ -188,16 +188,20 @@ class Flatten_Module(nn.Module):
     def __init__(self, in_ch, out_ch, isLocal=True):
         super(Flatten_Module, self).__init__()
         layers = []
+#         layers.append(Conv(in_ch, out_ch, K=5, S=2, P=2, activation=nn.LeakyReLU(inplace=True)))
         layers.append(Conv(in_ch, out_ch, K=5, S=2, P=2, activation=nn.LeakyReLU()))
         curr_dim = out_ch
 
         for i in range(2):
+#             layers.append(Conv(curr_dim, curr_dim*2, K=5, S=2, P=2, activation=nn.LeakyReLU(inplace=True)))
             layers.append(Conv(curr_dim, curr_dim*2, K=5, S=2, P=2, activation=nn.LeakyReLU()))
             curr_dim *= 2
 
         if isLocal:
+#             layers.append(Conv(curr_dim, curr_dim*2, K=5, S=2, P=2, activation=nn.LeakyReLU(inplace=True)))
             layers.append(Conv(curr_dim, curr_dim*2, K=5, S=2, P=2, activation=nn.LeakyReLU()))
         else:
+#             layers.append(Conv(curr_dim, curr_dim, K=5, S=2, P=2, activation=nn.LeakyReLU(inplace=True)))
             layers.append(Conv(curr_dim, curr_dim, K=5, S=2, P=2, activation=nn.LeakyReLU()))
 
         self.out = nn.Sequential(*layers)

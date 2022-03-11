@@ -31,21 +31,6 @@ from edgeconnecttest.networks import EdgeGenerator_
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def create_dir(dir):
     """Creates a directory if not exist.
     """
@@ -345,8 +330,8 @@ def video_completion_seamless(args):
     
 #     torch.cuda.empty_cache()
 #     print(torch.cuda.memory_stats())
-    print(torch.cuda.memory_summary())
-    print("==========================", torch.cuda.memory_allocated())
+#     print(torch.cuda.memory_summary())
+#     print("==========================", torch.cuda.memory_allocated())
     mask, video_comp = spatial_inpaint(deepfill, mask, video_comp)
     iter += 1
     

@@ -13,6 +13,7 @@ class TotalVariationalLoss(nn.Module):
 
     def __call__(self, x):
 
+        print("batch_size==============================", batch_size)
         batch_size = x.size()[0]
         h_x = x.size()[2]
         w_x = x.size()[3]

@@ -62,6 +62,7 @@ class RefinementNet(nn.Module):
     def __init__(self, in_ch, out_ch, device=None):
         super(RefinementNet,self).__init__()
         self.down_conv_branch = Down_Module(in_ch, out_ch, isRefine=True)
+#         self.down_attn_branch = Down_Module(in_ch, out_ch, activation=nn.ReLU(inplace=True), isRefine=True, isAttn=True)
         self.down_attn_branch = Down_Module(in_ch, out_ch, activation=nn.ReLU(), isRefine=True, isAttn=True)
         self.atrous = Dilation_Module(out_ch*4, out_ch*4)
         self.CAttn = Contextual_Attention_Module(out_ch*4, out_ch*4, device=device)
