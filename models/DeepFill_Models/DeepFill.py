@@ -18,9 +18,16 @@ class Generator(nn.Module):
             ones = to_var(torch.ones(mask.size()), device=self.device)
         else:
             ones = to_var(torch.ones(mask.size()))
+            pass
+        
         # stage1
         stage1_input = torch.cat([masked_img, ones, ones*mask], dim=1)
+        
         stage1_output, resized_mask = self.stage_1(stage1_input, mask)
+        
+        print(masked_img.shape, mask.shape, small_mask.shape)
+        
+        print(stage1_input.shape, stage1_output.shape, resized_mask.shape)
         # stage2
         new_masked_img = stage1_output*mask.clone() + masked_img.clone()*(1.-mask.clone())
         stage2_input = torch.cat([new_masked_img, ones.clone(), ones.clone()*mask.clone()], dim=1)
@@ -28,6 +35,7 @@ class Generator(nn.Module):
 
         return stage1_output, stage2_output, offset_flow
 
+import copy
 
 class CoarseNet(nn.Module):
     '''
@@ -38,16 +46,25 @@ class CoarseNet(nn.Module):
     '''
     def __init__(self, in_ch, out_ch, device=None):
         super(CoarseNet,self).__init__()
+        print("CoarseNet", in_ch, out_ch)
         self.down = Down_Module(in_ch, out_ch)
+#         print(self.down)
         self.atrous = Dilation_Module(out_ch*4, out_ch*4)
         self.up = Up_Module(out_ch*4, 3)
         self.device=device
 
     def forward(self, x, mask):
+        x_ = copy.deepcopy(x)
+        print("CoarseNet forward x", x.shape)
+        print("CoarseNet forward mask", mask.shape)
         x = self.down(x)
+        print("CoarseNet forward x", x.shape)
         resized_mask = down_sample(mask, scale_factor=0.25, mode='nearest', device=self.device)
+        print("CoarseNet forward", resized_mask.shape, mask.shape)
         x = self.atrous(x)
+        print("CoarseNet forward x", x.shape)
         x = self.up(x)
+        print("CoarseNet forward x", x.shape)
 
         return x, resized_mask
 

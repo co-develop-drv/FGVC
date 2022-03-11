@@ -377,7 +377,7 @@ def collect_env_info():
 
 def main(args):
     
-    print (collect_env_info())
+#     print (collect_env_info())
 
     assert args.mode in ('object_removal', 'video_extrapolation'), (
         "Accepted modes: 'object_removal', 'video_extrapolation', but input is %s"
