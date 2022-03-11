@@ -419,7 +419,8 @@ def down_sample(x, size=None, scale_factor=None, mode='nearest', device=None):
             grid = Variable(grid).cuda()
     # do sampling
 
-    return F.grid_sample(x, grid, mode=mode)
+    #return F.grid_sample(x, grid, mode=mode, align_corners=False)
+    return F.grid_sample(x, grid, mode=mode, align_corners=False)
 
 
 def to_var(x, volatile=False, device=None):

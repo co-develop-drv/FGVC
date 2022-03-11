@@ -591,7 +591,8 @@ def video_completion_seamless(args):
     video = []
     for filename in sorted(filename_list):
         video.append(torch.from_numpy(np.array(Image.open(filename)).astype(np.uint8)[..., :3]).permute(2, 0, 1).float())
-
+        pass
+        
     video = torch.stack(video, dim=0)
     video = video.to('cuda')
 
@@ -673,6 +674,8 @@ def video_completion_seamless(args):
 
     for indFrame in range(nFrame):
         img = video[:, :, :, indFrame]
+        print(mask[:, :, indFrame])
+        print(mask[:, :, indFrame].shape)
         img[mask[:, :, indFrame], :] = 0
         img = cv2.inpaint((img * 255).astype(np.uint8), mask[:, :, indFrame].astype(np.uint8), 3, cv2.INPAINT_TELEA).astype(np.float32)  / 255.
 
